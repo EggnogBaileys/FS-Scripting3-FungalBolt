@@ -5,7 +5,7 @@ A and D to move left and right. The player's ship is locked on the X axis.
 
 Spacebar to shoot. 
 
-The level has three main levels, each with a new enemy, the third one incorporating a multi-phased boss battle.
+The game has three main levels, each with a new enemy, the third one incorporating a multi-phased boss battle.
 You have infinite lives, as the goal is not survival as much as it is a challenge to see how few player deaths you end the game with.
 The game should take between 1 and 2 minutes to play through.
 
