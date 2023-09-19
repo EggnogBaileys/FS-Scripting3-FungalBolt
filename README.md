@@ -1,6 +1,8 @@
 # Fungal-Bolt-Scripting-3-Fixed-Shooter-Assignment-
-Solo Fixed Shooter assignment for Scripting 3 class.
+Solo Fixed Shooter assignment for Scripting 3 class. Made in the Godot Game Engine.
 By Malone Mast
+
+To launch the game, go into the "Build" folder and download and launch the exe.
 
 A and D to move left and right. The player's ship is locked on the X axis.
 
