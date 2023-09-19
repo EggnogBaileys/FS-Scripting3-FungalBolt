@@ -1,0 +1,151 @@
+[gd_scene load_steps=15 format=3 uid="uid://dd8tfdaca8qx4"]
+
+[ext_resource type="Texture2D" uid="uid://7u31krwbgrjc" path="res://Images/Shroom Dudes/Bullet.png" id="1_imx18"]
+[ext_resource type="Script" path="res://Scripts/Shroom_bullet.gd" id="1_oupc7"]
+[ext_resource type="Texture2D" uid="uid://c8kes1w21y6yg" path="res://Images/Shroom Dudes/Smoketrail.png" id="2_7af3i"]
+[ext_resource type="Texture2D" uid="uid://cou1ggx1p3ran" path="res://Images/Shroom Dudes/BulletSplosion.png" id="4_4wfyu"]
+[ext_resource type="AudioStream" uid="uid://ssp13vagm2cb" path="res://Audio/EnemyShootExplode.ogg" id="5_bxkys"]
+
+[sub_resource type="Animation" id="Animation_aewy7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ufgbi"]
+resource_name = "Smoke"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2lgd4"]
+_data = {
+"RESET": SubResource("Animation_aewy7"),
+"Smoke": SubResource("Animation_ufgbi")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phex1"]
+size = Vector2(5, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4wf3y"]
+size = Vector2(7, 3)
+
+[sub_resource type="Animation" id="Animation_ts6r7"]
+resource_name = "Default"
+
+[sub_resource type="Animation" id="Animation_dtrrn"]
+resource_name = "Explosion"
+length = 0.55
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/BulletExplode:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_ub66p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ehkh5"]
+_data = {
+"Default": SubResource("Animation_ts6r7"),
+"Explosion": SubResource("Animation_dtrrn"),
+"RESET": SubResource("Animation_ub66p")
+}
+
+[node name="ShroomBullet" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(-1.01949, -1.02021)
+script = ExtResource("1_oupc7")
+
+[node name="BulletSprite" type="Sprite2D" parent="."]
+modulate = Color(0, 0.819608, 0.313726, 1)
+texture = ExtResource("1_imx18")
+
+[node name="TrailSprite" type="Sprite2D" parent="BulletSprite"]
+modulate = Color(1.02037e-05, 0.968832, 0.720542, 1)
+position = Vector2(7, -2)
+texture = ExtResource("2_7af3i")
+hframes = 7
+
+[node name="Trail" type="AnimationPlayer" parent="BulletSprite/TrailSprite"]
+autoplay = "Smoke"
+libraries = {
+"": SubResource("AnimationLibrary_2lgd4")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.5, -0.5)
+shape = SubResource("RectangleShape2D_phex1")
+
+[node name="EnemyHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHitbox"]
+position = Vector2(-3.5, -0.5)
+shape = SubResource("RectangleShape2D_4wf3y")
+
+[node name="Explosion" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_4wfyu")
+flip_h = true
+hframes = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion"]
+libraries = {
+"": SubResource("AnimationLibrary_ehkh5")
+}
+
+[node name="BulletExplode" type="AudioStreamPlayer" parent="Explosion/AnimationPlayer"]
+stream = ExtResource("5_bxkys")
+
+[connection signal="animation_finished" from="Explosion/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

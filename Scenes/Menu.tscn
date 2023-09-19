@@ -1,0 +1,244 @@
+[gd_scene load_steps=15 format=3 uid="uid://cuycyxl7m5cgd"]
+
+[ext_resource type="Texture2D" uid="uid://3fwk85opuliy" path="res://Images/BGmenu.png" id="1_1lymx"]
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_o1ed2"]
+[ext_resource type="FontFile" uid="uid://1g77lr15dci" path="res://Font/DeterminationSansWebRegular-369X.ttf" id="2_b5skn"]
+[ext_resource type="Texture2D" uid="uid://c8kes1w21y6yg" path="res://Images/Shroom Dudes/Smoketrail.png" id="2_ow3ih"]
+[ext_resource type="Texture2D" uid="uid://cwnue410qbr20" path="res://Images/Ship/Ship.png" id="3_b7o1h"]
+
+[sub_resource type="Animation" id="Animation_7i0pi"]
+resource_name = "Default"
+length = 0.3
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_7dw58"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vtxny"]
+_data = {
+"Default": SubResource("Animation_7i0pi"),
+"RESET": SubResource("Animation_7dw58")
+}
+
+[sub_resource type="Gradient" id="Gradient_tt4lf"]
+colors = PackedColorArray(0, 0, 0, 0.545098, 0, 0, 0, 0.498039)
+
+[sub_resource type="Animation" id="Animation_aewy7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ufgbi"]
+resource_name = "Smoke"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2lgd4"]
+_data = {
+"RESET": SubResource("Animation_aewy7"),
+"Smoke": SubResource("Animation_ufgbi")
+}
+
+[sub_resource type="Animation" id="Animation_tbhuw"]
+resource_name = "Fadeout"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ui2m7"]
+_data = {
+"Fadeout": SubResource("Animation_tbhuw")
+}
+
+[node name="Level" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_o1ed2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.670588, 0.858824, 1, 1)
+position = Vector2(119, 142)
+scale = Vector2(2.08889, 1.89667)
+texture = ExtResource("1_1lymx")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite2D"]
+position = Vector2(-9.09575, 76.4499)
+scale = Vector2(0.478723, 0.527241)
+amount = 10
+lifetime = 5.0
+preprocess = 5.0
+emission_shape = 3
+emission_rect_extents = Vector2(120, 1)
+direction = Vector2(0, 0)
+spread = 58.71
+gravity = Vector2(0, -40)
+scale_amount_max = 2.0
+color = Color(1, 0.752941, 0.984314, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(-9.57447, 45.3427)
+texture = ExtResource("3_b7o1h")
+hframes = 2
+
+[node name="Default Jet Animation" type="AnimationPlayer" parent="Sprite2D/Sprite2D"]
+autoplay = "Default"
+libraries = {
+"": SubResource("AnimationLibrary_vtxny")
+}
+
+[node name="Jet Fumes" type="CPUParticles2D" parent="Sprite2D/Sprite2D"]
+position = Vector2(0, 12)
+amount = 15
+emission_shape = 3
+emission_rect_extents = Vector2(6, 1)
+gravity = Vector2(0, 115)
+initial_velocity_max = 1.0
+angular_velocity_max = 1.0
+scale_amount_min = 1.5
+scale_amount_max = 2.0
+color = Color(0, 0, 0, 1)
+color_ramp = SubResource("Gradient_tt4lf")
+
+[node name="TrailSprite" type="Sprite2D" parent="Sprite2D"]
+modulate = Color(1.02037e-05, 0.968832, 0.720542, 1)
+position = Vector2(-9.09575, -20.0352)
+rotation = -3.14159
+scale = Vector2(6.98583, -0.924364)
+texture = ExtResource("2_ow3ih")
+hframes = 7
+
+[node name="Trail" type="AnimationPlayer" parent="Sprite2D/TrailSprite"]
+autoplay = "Smoke"
+libraries = {
+"": SubResource("AnimationLibrary_2lgd4")
+}
+
+[node name="Fungal Bolt" type="Label" parent="Sprite2D"]
+offset_left = -31.117
+offset_top = -47.9789
+offset_right = 10.883
+offset_bottom = -7.97892
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_b5skn")
+text = "FUNGAL 
+BOLT"
+horizontal_alignment = 1
+
+[node name="By Malone Mast" type="Label" parent="Sprite2D"]
+offset_left = -24.8936
+offset_top = 65.905
+offset_right = 67.1064
+offset_bottom = 105.905
+scale = Vector2(0.307554, 0.307554)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_b5skn")
+text = "By Malone Mast"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -108.0
+offset_top = -6.0
+offset_right = 92.0
+offset_bottom = 274.0
+scale = Vector2(2.21281, 2.50636)
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect"]
+autoplay = "Fadeout"
+libraries = {
+"": SubResource("AnimationLibrary_ui2m7")
+}
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 141.0
+offset_right = 248.0
+offset_bottom = 172.0
+scale = Vector2(0.501204, 0.501204)
+text = "Begin Fungal Excavations"
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 169.0
+offset_right = 208.0
+offset_bottom = 200.0
+scale = Vector2(0.464476, 0.464476)
+text = "Bolt Out and Quit
+"
+
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

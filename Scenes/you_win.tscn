@@ -1,0 +1,130 @@
+[gd_scene load_steps=9 format=3 uid="uid://blroh2i2uy3by"]
+
+[ext_resource type="PackedScene" uid="uid://bgwxn7ij4daf3" path="res://Scenes/ui.tscn" id="1_cwqfd"]
+[ext_resource type="Script" path="res://Scripts/you_win.gd" id="1_hunyo"]
+[ext_resource type="Texture2D" uid="uid://3fwk85opuliy" path="res://Images/BGmenu.png" id="2_suaio"]
+[ext_resource type="Texture2D" uid="uid://c8kes1w21y6yg" path="res://Images/Shroom Dudes/Smoketrail.png" id="4_sitkn"]
+[ext_resource type="FontFile" uid="uid://1g77lr15dci" path="res://Font/DeterminationSansWebRegular-369X.ttf" id="5_0d2cm"]
+
+[sub_resource type="Animation" id="Animation_aewy7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ufgbi"]
+resource_name = "Smoke"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2lgd4"]
+_data = {
+"RESET": SubResource("Animation_aewy7"),
+"Smoke": SubResource("Animation_ufgbi")
+}
+
+[node name="YOU WIN" type="Node2D"]
+script = ExtResource("1_hunyo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.670588, 0.858824, 1, 1)
+position = Vector2(119, 142)
+scale = Vector2(2.08889, 1.89667)
+texture = ExtResource("2_suaio")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite2D"]
+position = Vector2(-9.09575, 76.4499)
+scale = Vector2(0.478723, 0.527241)
+amount = 10
+lifetime = 5.0
+preprocess = 5.0
+emission_shape = 3
+emission_rect_extents = Vector2(120, 1)
+direction = Vector2(0, 0)
+spread = 58.71
+gravity = Vector2(0, -40)
+scale_amount_max = 2.0
+color = Color(1, 0.752941, 0.984314, 1)
+
+[node name="TrailSprite" type="Sprite2D" parent="Sprite2D"]
+modulate = Color(1.02037e-05, 0.968832, 0.720542, 1)
+position = Vector2(-9.09575, -20.0352)
+rotation = -3.14159
+scale = Vector2(6.98583, -0.924364)
+texture = ExtResource("4_sitkn")
+hframes = 7
+
+[node name="Trail" type="AnimationPlayer" parent="Sprite2D/TrailSprite"]
+autoplay = "Smoke"
+libraries = {
+"": SubResource("AnimationLibrary_2lgd4")
+}
+
+[node name="Fungal Bolt" type="Label" parent="Sprite2D"]
+offset_left = -37.3404
+offset_top = -47.9789
+offset_right = 18.6596
+offset_bottom = -7.9789
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_0d2cm")
+text = "FUNGUS
+DEFEATED"
+horizontal_alignment = 1
+
+[node name="Final Score" type="Label" parent="Sprite2D"]
+offset_left = -24.8936
+offset_top = -5.27239
+offset_right = 48.1064
+offset_bottom = 34.7276
+scale = Vector2(0.425262, 0.425262)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("5_0d2cm")
+text = "Final Score"
+horizontal_alignment = 1
+
+[node name="UI" parent="." instance=ExtResource("1_cwqfd")]
+offset_top = -107.0
+offset_bottom = -107.0
+
+[node name="Quit" type="Button" parent="."]
+offset_left = 32.0
+offset_top = 238.0
+offset_right = 161.0
+offset_bottom = 269.0
+text = "Go Touch Grass
+"
+
+[node name="Restart" type="Button" parent="."]
+offset_left = 63.0
+offset_top = 201.0
+offset_right = 144.0
+offset_bottom = 232.0
+scale = Vector2(0.815541, 0.815541)
+text = "Try Again
+"
+
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]

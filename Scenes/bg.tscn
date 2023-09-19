@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://cxq451mwbied2"]
+
+[ext_resource type="Texture2D" uid="uid://cpvxt8r3m8k5n" path="res://Images/BG.png" id="1_3ehmo"]
+
+[sub_resource type="Gradient" id="Gradient_8j1oe"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l7150"]
+gradient = SubResource("Gradient_8j1oe")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Animation" id="Animation_0h6ym"]
+resource_name = "Scroll"
+length = 9.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(100, 0), Vector2(100, 280)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j2ec5"]
+_data = {
+"Scroll": SubResource("Animation_0h6ym")
+}
+
+[node name="BG" type="Node2D"]
+
+[node name="BGLighting" type="PointLight2D" parent="."]
+position = Vector2(109, 362)
+scale = Vector2(4.79933, 9.79933)
+color = Color(0.403922, 0.65098, 0.882353, 1)
+range_z_max = 0
+range_layer_min = -2
+texture = SubResource("GradientTexture2D_l7150")
+
+[node name="BG" type="Sprite2D" parent="."]
+modulate = Color(0.564706, 0.639216, 0.807843, 1)
+z_index = -1
+position = Vector2(100, 0)
+texture = ExtResource("1_3ehmo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BG"]
+autoplay = "Scroll"
+libraries = {
+"": SubResource("AnimationLibrary_j2ec5")
+}

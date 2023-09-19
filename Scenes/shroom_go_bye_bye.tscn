@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr7vvqkjootyl"]
+
+[ext_resource type="Texture2D" uid="uid://sjulmjf48lxo" path="res://Images/Shroom Dudes/Shroomsplosion.png" id="1_54f7l"]
+[ext_resource type="Script" path="res://Scripts/shroom_go_bye_bye.gd" id="1_klhsx"]
+[ext_resource type="AudioStream" uid="uid://cu01umrhw724d" path="res://Audio/EnemyKill.ogg" id="3_nwjm3"]
+
+[sub_resource type="Animation" id="Animation_pvur3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_rpybi"]
+resource_name = "dissolve"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/MushroomDyingSound:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tulqo"]
+_data = {
+"RESET": SubResource("Animation_pvur3"),
+"dissolve": SubResource("Animation_rpybi")
+}
+
+[node name="Shroom Go Bye Bye" type="Node2D"]
+script = ExtResource("1_klhsx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("1_54f7l")
+hframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+autoplay = "dissolve"
+libraries = {
+"": SubResource("AnimationLibrary_tulqo")
+}
+
+[node name="MushroomDyingSound" type="AudioStreamPlayer" parent="Sprite2D/AnimationPlayer"]
+stream = ExtResource("3_nwjm3")
+
+[connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -1,0 +1,226 @@
+[gd_scene load_steps=15 format=3 uid="uid://bl0ho23vqypsa"]
+
+[ext_resource type="Texture2D" uid="uid://c6kv4l44a6pq6" path="res://Images/Shrimpoons/Shrimpoons.png" id="1_bgh7f"]
+[ext_resource type="Script" path="res://Scripts/shrimpoons.gd" id="1_ji7ti"]
+[ext_resource type="AudioStream" uid="uid://dkhsv6hafiq7k" path="res://Audio/EnemyHit.ogg" id="2_p6rgf"]
+[ext_resource type="AudioStream" uid="uid://cu01umrhw724d" path="res://Audio/EnemyKill.ogg" id="3_22tpi"]
+
+[sub_resource type="Animation" id="Animation_0c3e5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_khf5y"]
+resource_name = "Squiggle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8bqf6"]
+_data = {
+"RESET": SubResource("Animation_0c3e5"),
+"Squiggle": SubResource("Animation_khf5y")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttwtn"]
+size = Vector2(13, 25)
+
+[sub_resource type="Animation" id="Animation_4otyl"]
+resource_name = "Death"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [4, 5, 6]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Movement/AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Shrimpoon:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_ujv1u"]
+resource_name = "Movement"
+length = 8.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1.6, 2, 3.2, 3.6, 4.8, 5.2, 6.4, 6.8, 7.8, 8.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-15, 0), Vector2(50, 50), Vector2(200, 50), Vector2(150, 100), Vector2(0, 100), Vector2(50, 150), Vector2(200, 150), Vector2(150, 200), Vector2(0, 200), Vector2(10, 230), Vector2(220, 230), Vector2(220, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:flip_v")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2, 4.8, 6.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_34bqm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_21xx1"]
+_data = {
+"Death": SubResource("Animation_4otyl"),
+"Movement": SubResource("Animation_ujv1u"),
+"RESET": SubResource("Animation_34bqm")
+}
+
+[sub_resource type="Animation" id="Animation_4quw3"]
+resource_name = "Damage"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.909804, 0.372549, 0.290196, 1), Color(0.909804, 0.372549, 0.290196, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Damage/Damaged:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7ucn3"]
+_data = {
+"Damage": SubResource("Animation_4quw3")
+}
+
+[node name="Shrimpoons" type="Node2D"]
+position = Vector2(-15, 0)
+script = ExtResource("1_ji7ti")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_bgh7f")
+hframes = 7
+frame = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+autoplay = "Squiggle"
+libraries = {
+"": SubResource("AnimationLibrary_8bqf6")
+}
+
+[node name="Shrimpoon" type="Area2D" parent="Sprite2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Shrimpoon"]
+position = Vector2(-0.5, 1.5)
+shape = SubResource("RectangleShape2D_ttwtn")
+
+[node name="Movement" type="AnimationPlayer" parent="Sprite2D"]
+autoplay = "Movement"
+libraries = {
+"": SubResource("AnimationLibrary_21xx1")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Sprite2D/Movement"]
+stream = ExtResource("3_22tpi")
+
+[node name="Damage" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_7ucn3")
+}
+
+[node name="Damaged" type="AudioStreamPlayer" parent="Sprite2D/Damage"]
+stream = ExtResource("2_p6rgf")
+
+[connection signal="area_entered" from="Sprite2D/Shrimpoon" to="." method="_on_shrimpoon_area_entered"]
