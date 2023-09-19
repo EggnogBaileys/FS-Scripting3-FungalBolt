@@ -1,5 +1,6 @@
 # Fungal-Bolt-Scripting-3-Fixed-Shooter-Assignment-
 Solo Fixed Shooter assignment for Scripting 3 class.
+By Malone Mast
 
 A and D to move left and right. The player's ship is locked on the X axis.
 
